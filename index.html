@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>刘斌的博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="刘斌的博客">
+<meta property="og:url" content="https://ice200117.github.io/index.html">
+<meta property="og:site_name" content="刘斌的博客">
+<meta property="og:locale" content="zh-CN">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="刘斌的博客">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">刘斌的博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">首页</a>
+        
+          <a class="main-nav-link" href="/archives">文章</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://ice200117.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main">
+  
+    <article id="post-geoserver发布china-DEM" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/14/geoserver发布china-DEM/" class="article-date">
+  <time datetime="2020-03-14T09:46:58.000Z" itemprop="datePublished">2020-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/14/geoserver发布china-DEM/">geoserver发布china DEM</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="geoserver服务搭建"><a href="#geoserver服务搭建" class="headerlink" title="geoserver服务搭建"></a>geoserver服务搭建</h1><p>利用<a href="https://github.com/kartoza/docker-geoserver" target="_blank" rel="noopener">docker镜像</a>启动，最好使用docker-compose的脚本。</p>
+<h1 id="下载-srtm90m分辨率也地形数据"><a href="#下载-srtm90m分辨率也地形数据" class="headerlink" title="下载 srtm90m分辨率也地形数据"></a>下载 <a href="http://srtm.csi.cgiar.org/download" target="_blank" rel="noopener">srtm90m分辨率也地形数据</a></h1><p>我下载了覆盖中国区域的6个分区，解压后，将tif放入 geoserver的data目录下，新建一个dem目录。</p>
+<h1 id="geoserver中发布ImageMosaic数据存储，并发布图层"><a href="#geoserver中发布ImageMosaic数据存储，并发布图层" class="headerlink" title="geoserver中发布ImageMosaic数据存储，并发布图层"></a>geoserver中发布ImageMosaic数据存储，并发布图层</h1><p><img src="/images/ImageMosaic.png" alt></p>
+<h2 id="填写名名称，URL在目录浏览中选择dem目录"><a href="#填写名名称，URL在目录浏览中选择dem目录" class="headerlink" title="填写名名称，URL在目录浏览中选择dem目录"></a>填写名名称，URL在目录浏览中选择dem目录</h2><h2 id="发布图层，启动所在工作区的WMS服务"><a href="#发布图层，启动所在工作区的WMS服务" class="headerlink" title="发布图层，启动所在工作区的WMS服务"></a>发布图层，启动所在工作区的WMS服务</h2><h2 id="应该可以在Layer-preview-中预览图层了"><a href="#应该可以在Layer-preview-中预览图层了" class="headerlink" title="应该可以在Layer preview 中预览图层了"></a>应该可以在Layer preview 中预览图层了</h2><p><img src="/images/preview.png" alt></p>
+<h1 id="获取任意的的高程数据"><a href="#获取任意的的高程数据" class="headerlink" title="获取任意的的高程数据"></a>获取任意的的高程数据</h1><p>发布完WMS服务后，可以利用<a href="https://docs.geoserver.org/stable/en/user/services/wms/reference.html#getfeatureinfo" target="_blank" rel="noopener">GetFeatureInfo</a>获取任意经纬度的高程。<br>api的格式为<br><a href="http://URL地址/geoserver/工作区名称/wms?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetFeatureInfo&amp;QUERY_LAYERS=工作区名称%3A图层名称&amp;LAYERS=工作区名称%3A图层名称&amp;exceptions=application%2Fvnd.ogc.se_inimage&amp;INFO_FORMAT=application%2Fjson&amp;X=50&amp;Y=50&amp;SRS=EPSG%3A404000&amp;STYLES=&amp;WIDTH=101&amp;HEIGHT=101&amp;BBOX=98.40248107910158%2C26.647682189941406%2C107.27943420410158%2C35.524635314941406" target="_blank" rel="noopener">http://URL地址/geoserver/工作区名称/wms?SERVICE=WMS&amp;VERSION=1.1.1&amp;REQUEST=GetFeatureInfo&amp;QUERY_LAYERS=工作区名称%3A图层名称&amp;LAYERS=工作区名称%3A图层名称&amp;exceptions=application%2Fvnd.ogc.se_inimage&amp;INFO_FORMAT=application%2Fjson&amp;X=50&amp;Y=50&amp;SRS=EPSG%3A404000&amp;STYLES=&amp;WIDTH=101&amp;HEIGHT=101&amp;BBOX=98.40248107910158%2C26.647682189941406%2C107.27943420410158%2C35.524635314941406</a></p>
+<h1 id="利用图层组，发布多图层的服务。"><a href="#利用图层组，发布多图层的服务。" class="headerlink" title="利用图层组，发布多图层的服务。"></a>利用图层组，发布多图层的服务。</h1><h2 id="gdaldem-生成-hillshade-图层"><a href="#gdaldem-生成-hillshade-图层" class="headerlink" title="gdaldem  生成 hillshade 图层"></a>gdaldem  生成 <a href="https://tilemill-project.github.io/tilemill/docs/guides/terrain-data/" target="_blank" rel="noopener">hillshade 图层</a></h2><h2 id="发布-省、市、县三个shapefile图层"><a href="#发布-省、市、县三个shapefile图层" class="headerlink" title="发布 省、市、县三个shapefile图层"></a>发布 省、市、县三个shapefile图层</h2><p>在每个图层的style中设置显示的缩放级别和显示的样式</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?xml version="1.0" encoding="ISO-8859-1"?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">StyledLayerDescriptor</span> <span class="attr">version</span>=<span class="string">"1.0.0"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">"http://www.opengis.net/sld StyledLayerDescriptor.xsd"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns</span>=<span class="string">"http://www.opengis.net/sld"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:ogc</span>=<span class="string">"http://www.opengis.net/ogc"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xlink</span>=<span class="string">"http://www.w3.org/1999/xlink"</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema-instance"</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- a named layer is the basic building block of an sld document --&gt;</span></span><br><span class="line"></span><br><span class="line">  <span class="tag">&lt;<span class="name">NamedLayer</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">Name</span>&gt;</span>Default Polygon<span class="tag">&lt;/<span class="name">Name</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">UserStyle</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- they have names, titles and abstracts --&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">Title</span>&gt;</span>A boring default style<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">Abstract</span>&gt;</span>A sample style that just prints out a grey interior with a black outline<span class="tag">&lt;/<span class="name">Abstract</span>&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- FeatureTypeStyles describe how to render different features --&gt;</span></span><br><span class="line">      <span class="comment">&lt;!-- a feature type for polygons --&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">FeatureTypeStyle</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!--FeatureTypeName&gt;Feature&lt;/FeatureTypeName--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">Rule</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Name</span>&gt;</span>Rule 1<span class="tag">&lt;/<span class="name">Name</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Title</span>&gt;</span>GreyFill BlackOutline<span class="tag">&lt;/<span class="name">Title</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Abstract</span>&gt;</span>Grey fill with a black outline 1 pixel in width<span class="tag">&lt;/<span class="name">Abstract</span>&gt;</span></span><br><span class="line"></span><br><span class="line">           <span class="tag">&lt;<span class="name">MinScaleDenominator</span>&gt;</span>100000<span class="tag">&lt;/<span class="name">MinScaleDenominator</span>&gt;</span></span><br><span class="line">      	   <span class="tag">&lt;<span class="name">MaxScaleDenominator</span>&gt;</span>7000000<span class="tag">&lt;/<span class="name">MaxScaleDenominator</span>&gt;</span></span><br><span class="line">          <span class="comment">&lt;!-- like a linesymbolizer but with a fill too --&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">PolygonSymbolizer</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Fill</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"fill"</span>&gt;</span>#AAAAAA<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"fill-opacity"</span>&gt;</span>0<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Fill</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">Stroke</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"stroke"</span>&gt;</span>#aaa<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">              <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"stroke-width"</span>&gt;</span>0.5<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">Stroke</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">PolygonSymbolizer</span>&gt;</span></span><br><span class="line"></span><br><span class="line">           <span class="tag">&lt;<span class="name">TextSymbolizer</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">Label</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">ogc:PropertyName</span>&gt;</span>NL_NAME_2<span class="tag">&lt;/<span class="name">ogc:PropertyName</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">Label</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">Font</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"font-family"</span>&gt;</span>SimSun<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"font-size"</span>&gt;</span>12<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"font-style"</span>&gt;</span>normal<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">CssParameter</span> <span class="attr">name</span>=<span class="string">"font-weight"</span>&gt;</span>bold<span class="tag">&lt;/<span class="name">CssParameter</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">Font</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">TextSymbolizer</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">Rule</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;/<span class="name">FeatureTypeStyle</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">UserStyle</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">NamedLayer</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">StyledLayerDescriptor</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+<h2 id="发布图层组就可以预览了，还可以发布瓦片服务WMTS-生成瓦片缓存。方便leaflet中调用。"><a href="#发布图层组就可以预览了，还可以发布瓦片服务WMTS-生成瓦片缓存。方便leaflet中调用。" class="headerlink" title="发布图层组就可以预览了，还可以发布瓦片服务WMTS, 生成瓦片缓存。方便leaflet中调用。"></a>发布图层组就可以预览了，还可以发布瓦片服务WMTS, 生成瓦片缓存。方便leaflet中调用。</h2><iframe src="http://tile.zc12369.com/geoserver/gwc/demo/china_dem:chinadem?gridSet=EPSG3857&format=image/png" width="800px" height="500px" frameborder="0" allowfullscreen></iframe>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ice200117.github.io/2020/03/14/geoserver发布china-DEM/" data-id="ck7rfekvq000dtw0tq8u5lsv8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gis/">gis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/03/14/hello-world/" class="article-date">
+  <time datetime="2020-03-14T09:35:05.214Z" itemprop="datePublished">2020-03-14</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/03/14/hello-world/">Hello World</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+
+<p><a href="https://hexo.io/zh-cn/docs/tag-plugins.html" target="_blank" rel="noopener">中文帮助</a></p>
+<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ice200117.github.io/2020/03/14/hello-world/" data-id="ck7rfd3200000tw0tl3atfi3c" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-postgresql-nuxt-搭建-graphL-应用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/07/postgresql-nuxt-搭建-graphL-应用/" class="article-date">
+  <time datetime="2019-08-07T09:28:47.000Z" itemprop="datePublished">2019-08-07</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/07/postgresql-nuxt-搭建-graphL-应用/">postgresql+nuxt 搭建 graphL 应用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="服务端"><a href="#服务端" class="headerlink" title="服务端"></a><a href="https://docs.hasura.io/1.0/graphql/manual/deployment/docker/index.html" target="_blank" rel="noopener">服务端</a></h1><h2 id="获取docker-运行脚本"><a href="#获取docker-运行脚本" class="headerlink" title="获取docker 运行脚本"></a>获取docker 运行脚本</h2><p>$ wget <a href="https://raw.githubusercontent.com/hasura/graphql-engine/master/install-manifests/docker-run/docker-run.sh" target="_blank" rel="noopener">https://raw.githubusercontent.com/hasura/graphql-engine/master/install-manifests/docker-run/docker-run.sh</a></p>
+<h2 id="启动-docker-run-sh-脚本"><a href="#启动-docker-run-sh-脚本" class="headerlink" title="启动 docker-run.sh 脚本"></a>启动 docker-run.sh 脚本</h2><p>docker run -d -p 8080:8080  -e HASURA_GRAPHQL_DATABASE_URL=postgres://postgres:postgres@localhost:5433/myapp_development   -e HASURA_GRAPHQL_ENABLE_CONSOLE=true hasura/graphql-engine:latest</p>
+<h1 id="前端"><a href="#前端" class="headerlink" title="前端"></a><a href="https://github.com/hasura/graphql-engine/tree/master/community/sample-apps/nuxtjs-postgres-graphql" target="_blank" rel="noopener">前端</a></h1><p>按照文档修改成自己后台的地址和表、字段名称，访问首页可以看到自己的数据了</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ice200117.github.io/2019/08/07/postgresql-nuxt-搭建-graphL-应用/" data-id="ck7rfd3240001tw0twszr1zqt" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-用meteoinfo和shapefile制作grads格式的mask文件" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/02/用meteoinfo和shapefile制作grads格式的mask文件/" class="article-date">
+  <time datetime="2019-08-02T07:13:13.000Z" itemprop="datePublished">2019-08-02</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/02/用meteoinfo和shapefile制作grads格式的mask文件/">用meteoinfo和shapefile制作grads格式的mask文件</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="准备数据模板ctl和grd"><a href="#准备数据模板ctl和grd" class="headerlink" title="准备数据模板ctl和grd"></a>准备数据模板ctl和grd</h2><p>在meteoinfo中 工具-&gt;输出地图数据-&gt;选择shape图层-&gt;output Format 选 GrADS Maskout file。即可生成mask文件，命名为mask.ctl</p>
+<p><img src="/images/maskout.png" alt></p>
+<h2 id="用meteoinfoLab-编写脚本-打开刚生成的-ctl-文件"><a href="#用meteoinfoLab-编写脚本-打开刚生成的-ctl-文件" class="headerlink" title="用meteoinfoLab 编写脚本 打开刚生成的 ctl 文件"></a>用meteoinfoLab 编写脚本 打开刚生成的 ctl 文件</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">path = <span class="string">'D:/share/map'</span></span><br><span class="line">regionShp = os.path.join(path, <span class="string">'CHN_adm2.shp'</span>)</span><br><span class="line">proj = projinfo()</span><br><span class="line">glayer = shaperead(regionShp)</span><br><span class="line"></span><br><span class="line">glayer.project(proj)</span><br><span class="line">features = glayer.shapes()</span><br><span class="line"></span><br><span class="line">n = len(features)</span><br><span class="line"></span><br><span class="line">f = addfile(<span class="string">'D:/share/tmp/mask.ctl'</span>)</span><br><span class="line">data = f[<span class="string">'mask'</span>][<span class="number">0</span>,:,:]</span><br><span class="line">firstime = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">print</span> data.shape</span><br><span class="line"><span class="keyword">print</span> f.proj</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">    feature = glayer.shapes()[i]</span><br><span class="line">    tdata = data.inpolygon(feature)</span><br><span class="line">    <span class="comment">#Change -1 to 0</span></span><br><span class="line">    tdata[tdata==<span class="number">-1</span>] = <span class="number">0</span></span><br><span class="line">    tdata = tdata * i</span><br><span class="line">    <span class="keyword">if</span> firstime:</span><br><span class="line">        mdata = tdata</span><br><span class="line">        firstime = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        mdata = mdata + tdata</span><br><span class="line">mdata = mdata.astype(<span class="string">'float'</span>)        </span><br><span class="line">binwrite(<span class="string">'D:/share/tmp/mask.dat'</span>, mdata, append=<span class="literal">False</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="在meteoinfo-中打开mask-ctl，画图为"><a href="#在meteoinfo-中打开mask-ctl，画图为" class="headerlink" title="在meteoinfo 中打开mask.ctl，画图为"></a>在meteoinfo 中打开mask.ctl，画图为</h2><p><img src="/images/maskfile.png" alt></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ice200117.github.io/2019/08/02/用meteoinfo和shapefile制作grads格式的mask文件/" data-id="ck7rfd32r0005tw0t9gpms5k1" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/gis/">gis</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-用predctionI搭建污染推荐系统" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/08/01/用predctionI搭建污染推荐系统/" class="article-date">
+  <time datetime="2019-08-01T07:43:26.000Z" itemprop="datePublished">2019-08-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2019/08/01/用predctionI搭建污染推荐系统/">用predctionI搭建污染推荐系统</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="开始搭建PredictionIO服务器"><a href="#开始搭建PredictionIO服务器" class="headerlink" title="开始搭建PredictionIO服务器"></a>开始搭建PredictionIO服务器</h2><h3 id="docker-环境"><a href="#docker-环境" class="headerlink" title="docker 环境"></a>docker 环境</h3>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ice200117.github.io/2019/08/01/用predctionI搭建污染推荐系统/" data-id="ck7rfd32u0006tw0tpvfqhnkh" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/模型/">模型</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/统计/">统计</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-rails-postgres-reset-increment-id" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/11/rails-postgres-reset-increment-id/" class="article-date">
+  <time datetime="2016-06-11T15:47:00.000Z" itemprop="datePublished">2016-06-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/06/11/rails-postgres-reset-increment-id/">Rails中重置PostgreSQL 自增主键的值</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="重置单个表-在rails-console中执行以下代码："><a href="#重置单个表-在rails-console中执行以下代码：" class="headerlink" title="重置单个表 在rails console中执行以下代码："></a>重置单个表 在rails console中执行以下代码：</h1><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">table = <span class="string">'my_table'</span></span><br><span class="line">  auto_inc_val = <span class="number">10</span>    <span class="comment"># New auto increment start point</span></span><br><span class="line">  ActiveRecord::Base.connection.execute(</span><br><span class="line">  <span class="string">"ALTER SEQUENCE <span class="subst">#&#123;table&#125;</span>_id_seq RESTART WITH <span class="subst">#&#123;auto_inc_val&#125;</span>"</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h1 id="重置所有表-在rails-console中执行以下代码："><a href="#重置所有表-在rails-console中执行以下代码：" class="headerlink" title="重置所有表 在rails console中执行以下代码："></a>重置所有表 在rails console中执行以下代码：</h1><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">ActiveRecord::Base.connection.tables.each <span class="keyword">do</span> <span class="params">|table|</span></span><br><span class="line">    result = ActiveRecord::Base.connection.execute(<span class="string">"SELECT id FROM <span class="subst">#&#123;table&#125;</span> ORDER BY id DESC LIMIT 1"</span>)</span><br><span class="line">    <span class="keyword">if</span> result.any?</span><br><span class="line">      ai_val = result.first[<span class="string">'id'</span>].to_i + <span class="number">1</span></span><br><span class="line">        puts <span class="string">"Resetting auto increment ID for <span class="subst">#&#123;table&#125;</span> to <span class="subst">#&#123;ai_val&#125;</span>"</span></span><br><span class="line">        ActiveRecord::Base.connection.execute(<span class="string">"ALTER SEQUENCE <span class="subst">#&#123;table&#125;</span>_id_seq RESTART WITH <span class="subst">#&#123;ai_val&#125;</span>"</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">  <span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://ice200117.github.io/2016/06/11/rails-postgres-reset-increment-id/" data-id="ck7rfd3270002tw0tcq3c4it6" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rails/">rails</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/gis/">gis</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/rails/">rails</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/模型/">模型</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/统计/">统计</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/gis/" style="font-size: 20px;">gis</a> <a href="/tags/rails/" style="font-size: 10px;">rails</a> <a href="/tags/模型/" style="font-size: 10px;">模型</a> <a href="/tags/统计/" style="font-size: 10px;">统计</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">六月 2016</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/03/14/geoserver发布china-DEM/">geoserver发布china DEM</a>
+          </li>
+        
+          <li>
+            <a href="/2020/03/14/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/07/postgresql-nuxt-搭建-graphL-应用/">postgresql+nuxt 搭建 graphL 应用</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/02/用meteoinfo和shapefile制作grads格式的mask文件/">用meteoinfo和shapefile制作grads格式的mask文件</a>
+          </li>
+        
+          <li>
+            <a href="/2019/08/01/用predctionI搭建污染推荐系统/">用predctionI搭建污染推荐系统</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 刘斌<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/archives" class="mobile-nav-link">文章</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
